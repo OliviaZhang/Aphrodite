@@ -14,6 +14,10 @@ app.get('/', function(req, res) {
     res.render("index");
 });
 
+app.get('/register', function(req, res) {
+    res.render("register");
+});
+
 app.use(express.static(__dirname + '/public'));
 app.listen(port);
 console.log('Magic happens!');
