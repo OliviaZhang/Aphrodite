@@ -10,11 +10,19 @@ angular.module('Aphrodite')
         window.localStorage.setItem(LOCAL_TOKEN_KEY, token);
         userCredentials(token);
     }
+
     function userCredentials(token) {
         isAuthenticated = true;
         authToken = token;
 
         $http.defaults.headers.common.Authorization = authToken;
+    }
+
+    function destroyUserCredentials() {
+        authToken = undefined;
+        isAuthenticated = false;
+        $http.defaults.headers.common.Authorization = undefined;
+        window.localStorage.removeItem(LOCAL_TOKEN_KEY)
     }
 
     var register = function(user) {
@@ -41,9 +49,14 @@ angular.module('Aphrodite')
         });
     };
 
+    var logout = function() {
+        destroyUserCredentials();
+    };
+
     return {
         login: login,
         register: register,
+        logout: logout,
         isAuthenticated: function() {return isAuthenticated;},
     };
 })
