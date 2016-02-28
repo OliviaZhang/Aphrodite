@@ -32,8 +32,10 @@ angular.module('Aphrodite', ['ui.router'])
 
 .run(function ($rootScope, $state, AuthService, AUTH_EVENTS) {
   $rootScope.$on('$stateChangeStart', function (event,next, nextParams, fromState) {
-    if (!AuthService.isAuthenticated()) {
+
+    if (!AuthService.isAuthenticated() && !window.localStorage.getItem('yourTokenKey')) {
       console.log(next.name);
+
       if (next.name !== 'login' && next.name !== 'register') {
         event.preventDefault();
         $state.go('login');
