@@ -8,7 +8,7 @@ var config = require('./config/database');
 var User = require('./app/models/user');
 var port = process.env.PORT || 8080;
 var jwt = require('jwt-simple');
-var routes = require('./routes');
+
 
 // connect to database
 mongoose.connect(config.database);
@@ -101,7 +101,7 @@ app.use(morgan('dev'));
 
 app.use(passport.initialize());
 app.set('view engine', 'ejs');
-app.set('views',__dirname + '/public/views'); //set absolute path for views folder 
+app.set('views',__dirname + '/public/views'); //set absolute path for views folder
 app.use(express.static(__dirname + '/public'));
 app.use('/api', apiRoutes);
 app.get('/', function(req, res) {
