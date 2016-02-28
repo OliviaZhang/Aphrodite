@@ -1,6 +1,6 @@
-var app = angular.module('Aphrodite', ['ui.router']);
+angular.module('Aphrodite', ['ui.router'])
 
-app.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlRouterProvider){
+.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlRouterProvider){
 
 
       $stateProvider
@@ -28,23 +28,16 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlR
     $urlRouterProvider.otherwise('home');
 
 
-}]);
-app.controller('MainCtrl', ['$scope', function($scope) {
-    $scope.test = 'Hello world';
-}]);
+}])
 
-app.controller('HomeCtrl', ['$scope', function($scope) {
-    $scope.test = 'Hello Home!!';
-}]);
-
-app.controller('RegisterCtrl', ['$scope', function($scope) {
-    $scope.test = 'Hello Register!!';
-}]);
-
-app.controller('LoginCtrl', ['$scope', function($scope) {
-    $scope.test = 'Hello Login!!';
-}]);
-
-app.controller('InsideCtrl', ['$scope', function($scope) {
-    $scope.test = 'Hello Member!!';
-}]);
+.run(function ($rootScope, $state, AuthService, AUTH_EVENTS) {
+  $rootScope.$on('$stateChangeStart', function (event,next, nextParams, fromState) {
+    if (!AuthService.isAuthenticated()) {
+      console.log(next.name);
+      if (next.name !== 'login' && next.name !== 'register') {
+        event.preventDefault();
+        $state.go('login');
+      }
+    }
+  });
+});
